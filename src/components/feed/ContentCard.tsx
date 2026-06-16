@@ -7,11 +7,26 @@ interface Props {
   featured?: boolean;
 }
 
+// Strips markdown syntax so card previews show clean plain text.
+function stripMarkdown(text: string): string {
+  return text
+    .replace(/#{1,6}\s+/g, "")
+    .replace(/\*\*(.+?)\*\*/g, "$1")
+    .replace(/\*(.+?)\*/g, "$1")
+    .replace(/_{1,2}(.+?)_{1,2}/g, "$1")
+    .replace(/\[(.+?)\]\(.+?\)/g, "$1")
+    .replace(/`(.+?)`/g, "$1")
+    .replace(/\n{2,}/g, " ")
+    .trim();
+}
+
 export default function ContentCard({ item, index, onClick, featured }: Props) {
   const date = new Date(item.created_at).toLocaleDateString("tr-TR", {
     day: "numeric",
     month: "long",
   });
+
+  const preview = stripMarkdown(item.content);
 
   if (featured) {
     return (
@@ -26,8 +41,8 @@ export default function ContentCard({ item, index, onClick, featured }: Props) {
         <h2 className="text-4xl font-black leading-tight text-white group-hover:text-sky-300 transition-colors duration-150 mb-5">
           {item.query}
         </h2>
-        <p className="text-neutral-400 text-sm leading-relaxed border-l-2 border-sky-800 pl-4">
-          {item.content}
+        <p className="text-neutral-400 text-sm leading-relaxed border-l-2 border-sky-800 pl-4 line-clamp-4">
+          {preview}
         </p>
         {item.sources.length > 0 && (
           <p className="mt-5 text-xs text-neutral-600">
@@ -53,7 +68,7 @@ export default function ContentCard({ item, index, onClick, featured }: Props) {
           {item.query}
         </h2>
         <p className="text-xs text-neutral-600 line-clamp-2 leading-relaxed">
-          {item.content}
+          {preview}
         </p>
         <p className="text-xs text-neutral-700 mt-1.5">{date}</p>
       </div>

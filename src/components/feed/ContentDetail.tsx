@@ -1,3 +1,4 @@
+import ReactMarkdown from "react-markdown";
 import type { ContentItem } from "@/types";
 
 interface Props {
@@ -30,13 +31,13 @@ export default function ContentDetail({ item, onClose }: Props) {
       </div>
 
       <div className="flex-1 overflow-y-auto">
-        <div className="max-w-2xl px-8 pt-10 pb-16">
+        <div className="max-w-2xl mx-auto px-12 pt-12 pb-20">
           <h1 className="text-4xl font-black text-white leading-tight mb-8">
             {item.query}
           </h1>
-          <p className="text-neutral-400 text-base leading-loose whitespace-pre-line">
-            {item.content}
-          </p>
+          <div className="prose prose-invert prose-neutral max-w-none text-neutral-400 text-base leading-loose">
+            <ReactMarkdown>{item.content}</ReactMarkdown>
+          </div>
 
           {item.sources.length > 0 && (
             <div className="mt-12 pt-6 border-t border-neutral-800">
