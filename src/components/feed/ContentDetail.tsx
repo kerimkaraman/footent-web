@@ -7,7 +7,7 @@ interface Props {
 }
 
 export default function ContentDetail({ item, onClose }: Props) {
-  const date = new Date(item.created_at).toLocaleDateString("tr-TR", {
+  const date = new Date(item.created_at).toLocaleDateString("en-GB", {
     day: "numeric",
     month: "long",
     year: "numeric",
@@ -26,7 +26,7 @@ export default function ContentDetail({ item, onClose }: Props) {
           onClick={onClose}
           className="text-xs text-neutral-500 hover:text-white transition-colors uppercase tracking-widest"
         >
-          ← Kapat
+          ← Close
         </button>
       </div>
 
@@ -42,7 +42,7 @@ export default function ContentDetail({ item, onClose }: Props) {
           {item.sources.length > 0 && (
             <div className="mt-12 pt-6 border-t border-neutral-800">
               <p className="text-xs text-neutral-600 uppercase tracking-widest mb-2">
-                Kaynaklar
+                Sources
               </p>
               <p className="text-sm text-neutral-500">
                 {item.sources.join(", ")}

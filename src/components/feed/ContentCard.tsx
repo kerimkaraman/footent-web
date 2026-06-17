@@ -21,7 +21,7 @@ function stripMarkdown(text: string): string {
 }
 
 export default function ContentCard({ item, index, onClick, featured }: Props) {
-  const date = new Date(item.created_at).toLocaleDateString("tr-TR", {
+  const date = new Date(item.created_at).toLocaleDateString("en-GB", {
     day: "numeric",
     month: "long",
   });
@@ -33,7 +33,7 @@ export default function ContentCard({ item, index, onClick, featured }: Props) {
       <button onClick={onClick} className="w-full text-left group pb-2">
         <div className="flex items-center gap-3 mb-5">
           <span className="text-xs font-bold tracking-widest text-sky-400 uppercase">
-            Öne Çıkan
+            Featured
           </span>
           <span className="h-px flex-1 bg-sky-900" />
           <span className="text-xs text-neutral-600">{date}</span>

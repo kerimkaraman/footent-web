@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { ContentItem } from "@/types";
+import type { ContentItem, ContentStatus } from "@/types";
 import { updateContentStatus } from "@/api/admin";
 
 interface Props {
@@ -12,12 +12,12 @@ export default function DraftCard({ item, onUpdate }: Props) {
   const [editedContent, setEditedContent] = useState(item.content);
   const [loading, setLoading] = useState(false);
 
-  const date = new Date(item.created_at).toLocaleDateString("tr-TR", {
+  const date = new Date(item.created_at).toLocaleDateString("en-GB", {
     day: "numeric",
     month: "short",
   });
 
-  async function handleAction(status: "approved" | "rejected") {
+  async function handleAction(status: ContentStatus) {
     setLoading(true);
     try {
       const updated = await updateContentStatus(
@@ -56,24 +56,24 @@ export default function DraftCard({ item, onUpdate }: Props) {
 
       <div className="mt-3 flex items-center gap-4">
         <button
-          onClick={() => handleAction("approved")}
+          onClick={() => handleAction("published")}
           disabled={loading}
           className="text-xs font-semibold text-green-400 hover:text-green-300 disabled:opacity-40 transition-colors uppercase tracking-wide"
         >
-          Onayla
+          Publish
         </button>
         <button
           onClick={() => handleAction("rejected")}
           disabled={loading}
           className="text-xs font-semibold text-red-500 hover:text-red-400 disabled:opacity-40 transition-colors uppercase tracking-wide"
         >
-          Reddet
+          Reject
         </button>
         <button
           onClick={() => setEditing((e) => !e)}
           className="text-xs text-neutral-600 hover:text-neutral-400 transition-colors ml-auto"
         >
-          {editing ? "İptal" : "Düzenle"}
+          {editing ? "Cancel" : "Edit"}
         </button>
       </div>
     </div>

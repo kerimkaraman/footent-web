@@ -24,7 +24,7 @@ export default function AdminPage() {
         if (err.message === "UNAUTHORIZED" || err.message === "NO_AUTH_KEY") {
           navigate("/login");
         } else {
-          setError("İçerikler yüklenemedi.");
+          setError("Failed to load content.");
         }
       })
       .finally(() => setLoading(false));
@@ -61,14 +61,14 @@ export default function AdminPage() {
         <div className="flex items-center gap-5">
           {!loading && (
             <span className="text-xs font-bold text-sky-400 bg-sky-950 border border-sky-800 px-2.5 py-1 rounded-sm">
-              {drafts.length} bekliyor
+              {drafts.length} pending
             </span>
           )}
           <button
             onClick={handleLogout}
             className="text-xs text-neutral-600 hover:text-red-400 transition-colors uppercase tracking-wider"
           >
-            Çıkış
+            Logout
           </button>
         </div>
       </header>
@@ -76,7 +76,7 @@ export default function AdminPage() {
       <main className="px-8 py-8">
         <div className="border-t-2 border-sky-900 pt-6">
           <h2 className="text-xs font-bold tracking-widest text-neutral-500 uppercase mb-6">
-            Bekleyen Taslaklar
+            Pending Drafts
           </h2>
 
           {loading && (
@@ -97,7 +97,7 @@ export default function AdminPage() {
           )}
 
           {!loading && !error && drafts.length === 0 && (
-            <p className="text-neutral-600 text-sm">Bekleyen taslak yok.</p>
+            <p className="text-neutral-600 text-sm">No pending drafts.</p>
           )}
 
           {!loading && !error && (

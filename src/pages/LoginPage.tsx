@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import { useAuth } from "@/hooks/useAuth";
 
@@ -7,7 +7,7 @@ export default function LoginPage() {
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  function handleSubmit(e: FormEvent) {
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!inputKey.trim()) return;
     login(inputKey.trim());
@@ -24,7 +24,7 @@ export default function LoginPage() {
           </h1>
         </div>
         <p className="text-xs text-neutral-600 tracking-widest uppercase mb-10 ml-4">
-          Admin Girişi
+          Admin Login
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-5">
@@ -45,7 +45,7 @@ export default function LoginPage() {
             type="submit"
             className="w-full text-sm font-bold text-white bg-sky-600 hover:bg-sky-500 py-3 transition-colors rounded-sm tracking-wide"
           >
-            Giriş Yap
+            Sign In
           </button>
         </form>
       </div>

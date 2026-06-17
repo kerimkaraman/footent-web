@@ -13,7 +13,7 @@ export default function FeedPage() {
   useEffect(() => {
     getFeed()
       .then(setItems)
-      .catch(() => setError("İçerikler yüklenemedi."))
+      .catch(() => setError("Failed to load content."))
       .finally(() => setLoading(false));
   }, []);
 
@@ -29,7 +29,7 @@ export default function FeedPage() {
           </h1>
         </div>
         <p className="text-xs tracking-[0.25em] text-neutral-600 uppercase">
-          Futbol · Analiz
+          Football · Analysis
         </p>
       </header>
 
@@ -60,7 +60,7 @@ export default function FeedPage() {
         )}
 
         {!loading && !error && items.length === 0 && (
-          <p className="text-neutral-600 text-sm">Henüz içerik yayınlanmadı.</p>
+          <p className="text-neutral-600 text-sm">No content published yet.</p>
         )}
 
         {!loading && !error && featured && (
@@ -78,7 +78,7 @@ export default function FeedPage() {
                 <>
                   <div className="flex items-center gap-3 mb-5">
                     <span className="text-xs font-bold tracking-widest text-neutral-500 uppercase">
-                      Diğer
+                      More
                     </span>
                     <span className="h-px flex-1 bg-neutral-800" />
                   </div>
