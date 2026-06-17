@@ -4,16 +4,16 @@ const STORAGE_KEY = "admin_key";
 
 export function useAuth() {
   const [key, setKey] = useState<string | null>(() =>
-    localStorage.getItem(STORAGE_KEY)
+    sessionStorage.getItem(STORAGE_KEY)
   );
 
   function login(adminKey: string) {
-    localStorage.setItem(STORAGE_KEY, adminKey);
+    sessionStorage.setItem(STORAGE_KEY, adminKey);
     setKey(adminKey);
   }
 
   function logout() {
-    localStorage.removeItem(STORAGE_KEY);
+    sessionStorage.removeItem(STORAGE_KEY);
     setKey(null);
   }
 

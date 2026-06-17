@@ -1,17 +1,43 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router";
 import { useAuth } from "@/hooks/useAuth";
 
+const BASE_URL = import.meta.env.VITE_API_BASE_URL as string;
+
 export default function LoginPage() {
   const [inputKey, setInputKey] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    if (!inputKey.trim()) return;
-    login(inputKey.trim());
-    navigate("/admin");
+  async function handleSubmit() {
+    const trimmed = inputKey.trim();
+    if (!trimmed) return;
+
+    setLoading(true);
+    setError(null);
+
+    try {
+      // Validate the key against the server before persisting it — prevents storing
+      // an invalid key that would silently fail on every subsequent admin request.
+      const res = await fetch(`${BASE_URL}/admin/content?limit=1`, {
+        headers: { "X-Admin-Key": trimmed, "Content-Type": "application/json" },
+      });
+
+      if (res.ok) {
+        login(trimmed);
+        navigate("/admin");
+      } else if (res.status === 403) {
+        setError("Invalid API key.");
+      } else {
+        setError("Unable to connect to server.");
+      }
+    } catch {
+      setError("Unable to connect to server.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -27,7 +53,7 @@ export default function LoginPage() {
           Admin Login
         </p>
 
-        <form onSubmit={handleSubmit} className="space-y-5">
+        <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }} className="space-y-5">
           <div>
             <label className="text-xs text-neutral-500 uppercase tracking-widest block mb-2">
               Admin Key
@@ -38,14 +64,21 @@ export default function LoginPage() {
               onChange={(e) => setInputKey(e.target.value)}
               placeholder="••••••••••"
               autoFocus
-              className="w-full bg-neutral-900 border border-neutral-700 focus:border-sky-600 outline-none px-4 py-3 text-white text-sm placeholder-neutral-700 transition-colors rounded-sm"
+              disabled={loading}
+              className="w-full bg-neutral-900 border border-neutral-700 focus:border-sky-600 outline-none px-4 py-3 text-white text-sm placeholder-neutral-700 transition-colors rounded-sm disabled:opacity-50"
             />
           </div>
+
+          {error && (
+            <p className="text-xs text-red-400 tracking-wide">{error}</p>
+          )}
+
           <button
             type="submit"
-            className="w-full text-sm font-bold text-white bg-sky-600 hover:bg-sky-500 py-3 transition-colors rounded-sm tracking-wide"
+            disabled={loading}
+            className="w-full text-sm font-bold text-white bg-sky-600 hover:bg-sky-500 disabled:opacity-50 py-3 transition-colors rounded-sm tracking-wide"
           >
-            Sign In
+            {loading ? "Verifying..." : "Sign In"}
           </button>
         </form>
       </div>

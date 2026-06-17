@@ -1,4 +1,5 @@
 import ReactMarkdown from "react-markdown";
+import rehypeSanitize from "rehype-sanitize";
 import type { ContentItem } from "@/types";
 
 interface Props {
@@ -36,7 +37,7 @@ export default function ContentDetail({ item, onClose }: Props) {
             {item.query}
           </h1>
           <div className="prose prose-invert prose-neutral max-w-none text-neutral-400 text-base leading-loose">
-            <ReactMarkdown>{item.content}</ReactMarkdown>
+            <ReactMarkdown rehypePlugins={[rehypeSanitize]}>{item.content}</ReactMarkdown>
           </div>
 
           {item.sources.length > 0 && (
